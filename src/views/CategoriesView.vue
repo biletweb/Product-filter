@@ -4,7 +4,9 @@
   <div v-else class="grid grid-cols-5 gap-4">
     <div v-for="category in categories" :key="category.id">
       <router-link :to="{ name: 'subcategory', params: { id: category.id } }">
-        {{ category.name }}
+        <div class="card text-center p-4 bg-slate-300 rounded-lg">
+          {{ category.name }}
+        </div>
       </router-link>
     </div>
   </div>

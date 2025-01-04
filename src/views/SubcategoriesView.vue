@@ -20,12 +20,14 @@
     <div v-if="categories.length" class="grid grid-cols-5 gap-4">
       <div v-for="category in categories" :key="category.id">
         <router-link :to="{ name: 'subcategory', params: { id: category.id } }">
-          {{ category.name }}
+          <div class="card text-center p-4 bg-slate-300 rounded-lg">
+            {{ category.name }}
+          </div>
         </router-link>
       </div>
     </div>
   </div>
-  <div class="my-4">
+  <div class="my-4 grid grid-cols-5 gap-4">
     <div v-for="product in products" :key="product.id">
       <!-- <router-link :to="{ name: 'product', params: { id: product.id } }"> -->
       {{ product.name }}
