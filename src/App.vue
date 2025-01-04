@@ -1,10 +1,11 @@
 <script setup>
 import { RouterView } from 'vue-router'
+import CategoriesView from './views/CategoriesView.vue'
 </script>
 
 <template>
   <header>
-    <span class="text-3xl font-bold underline">Product filter</span>
+    <CategoriesView />
   </header>
 
   <RouterView />
