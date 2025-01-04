@@ -4,13 +4,14 @@
   <div v-else>
     <div class="my-4 flex items-center">
       <router-link :to="{ name: 'home' }" class="mr-1"><span class="hover:underline">Home</span> /</router-link>
-      <div
-        v-for="(breadcrumb, index) in breadcrumbs"
-        :key="breadcrumb.id"
-        class="flex items-center"
-        :class="{ 'font-semibold text-sky-500': isActiveBreadcrumb(breadcrumb.id) }"
-      >
-        <router-link :to="{ name: 'subcategory', params: { id: breadcrumb.id } }" class="hover:underline">
+      <div v-for="(breadcrumb, index) in breadcrumbs" :key="breadcrumb.id" class="flex items-center">
+        <router-link
+          :to="{ name: 'subcategory', params: { id: breadcrumb.id } }"
+          :class="{
+            'text-sky-500 cursor-default': isActiveBreadcrumb(breadcrumb.id),
+            'hover:underline': !isActiveBreadcrumb(breadcrumb.id),
+          }"
+        >
           {{ breadcrumb.name }}
         </router-link>
         <span v-if="index < breadcrumbs.length - 1" class="mx-1">/</span>
