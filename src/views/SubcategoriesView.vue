@@ -1,5 +1,5 @@
 <template>
-  <div class="text-3xl mb-4 font-bold">Categories ID: {{ route.params.id }}</div>
+  <div class="text-3xl mb-4 font-bold">Categories</div>
   <div v-if="loading" class="text-center">Loading...</div>
   <div v-else>
     <div class="my-4 flex items-center">
