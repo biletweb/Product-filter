@@ -27,13 +27,18 @@
       </div>
     </div>
   </div>
-  <div class="my-4 grid grid-cols-5 gap-4">
-    <div v-for="product in products" :key="product.id">
-      <!-- <router-link :to="{ name: 'product', params: { id: product.id } }"> -->
-      <div class="card text-center p-4 bg-sky-200 rounded-lg">
-        {{ product.name }}
+  <div v-if="products.length" class="my-4 grid grid-rows-1 grid-flow-col gap-4">
+    <div class="border border-sky-300 bg-sky-200 rounded-lg">jjjj</div>
+    <div>
+      <div class="grid grid-cols-4 gap-4">
+        <div v-for="product in products" :key="product.id">
+          <!-- <router-link :to="{ name: 'product', params: { id: product.id } }"> -->
+          <div class="card text-center p-4 bg-sky-200 rounded-lg">
+            {{ product.name }}
+          </div>
+          <!-- </router-link> -->
+        </div>
       </div>
-      <!-- </router-link> -->
     </div>
   </div>
 </template>
