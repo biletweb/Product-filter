@@ -3,6 +3,7 @@
   <div v-if="loading" class="text-center">Loading...</div>
   <div v-else>
     <div class="my-4 flex items-center">
+      <router-link :to="{ name: 'home' }" class="mr-1"><span class="hover:underline">Home</span> /</router-link>
       <div v-for="(breadcrumb, index) in breadcrumbs" :key="index">
         <router-link :to="{ name: 'subcategory', params: { id: breadcrumb.id } }" class="hover:underline">
           {{ breadcrumb.name }}
