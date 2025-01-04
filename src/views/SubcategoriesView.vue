@@ -4,9 +4,10 @@
   <div v-else>
     <div class="my-4 flex items-center">
       <div v-for="(breadcrumb, index) in breadcrumbs" :key="index">
-        <router-link :to="{ name: 'subcategory', params: { id: breadcrumb.id } }" class="mr-2 hover:underline">
+        <router-link :to="{ name: 'subcategory', params: { id: breadcrumb.id } }" class="hover:underline">
           {{ breadcrumb.name }}
         </router-link>
+        <span v-if="index < breadcrumbs.length - 1" class="mx-1">/</span>
       </div>
     </div>
     <div class="grid grid-cols-5 gap-4">
