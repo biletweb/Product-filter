@@ -30,7 +30,9 @@
   <div class="my-4 grid grid-cols-5 gap-4">
     <div v-for="product in products" :key="product.id">
       <!-- <router-link :to="{ name: 'product', params: { id: product.id } }"> -->
-      {{ product.name }}
+      <div class="card text-center p-4 bg-sky-200 rounded-lg">
+        {{ product.name }}
+      </div>
       <!-- </router-link> -->
     </div>
   </div>
