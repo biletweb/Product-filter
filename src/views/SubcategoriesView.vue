@@ -17,12 +17,19 @@
         <span v-if="index < breadcrumbs.length - 1" class="mx-1">/</span>
       </div>
     </div>
-    <div class="grid grid-cols-5 gap-4">
+    <div v-if="categories.length" class="grid grid-cols-5 gap-4">
       <div v-for="category in categories" :key="category.id">
         <router-link :to="{ name: 'subcategory', params: { id: category.id } }">
           {{ category.name }}
         </router-link>
       </div>
+    </div>
+  </div>
+  <div class="my-4">
+    <div v-for="product in products" :key="product.id">
+      <!-- <router-link :to="{ name: 'product', params: { id: product.id } }"> -->
+      {{ product.name }}
+      <!-- </router-link> -->
     </div>
   </div>
 </template>
@@ -35,11 +42,13 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 const categories = ref([])
 const breadcrumbs = ref([])
+const products = ref([])
 const loading = ref(false)
 
 const getCategories = async () => {
   categories.value = []
   breadcrumbs.value = []
+  products.value = []
   loading.value = true
   try {
     const subcategoryId = route.params.id
@@ -51,10 +60,12 @@ const getCategories = async () => {
     })
     categories.value = response.data.categories || []
     breadcrumbs.value = response.data.breadcrumbs || []
+    products.value = response.data.products || []
   } catch (error) {
     console.error('Error fetching categories:', error)
     categories.value = []
     breadcrumbs.value = []
+    products.value = []
   } finally {
     loading.value = false
   }
