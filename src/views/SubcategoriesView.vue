@@ -4,7 +4,7 @@
   <div v-else>
     <div class="my-4 flex items-center">
       <router-link :to="{ name: 'home' }" class="mr-1"><span class="hover:underline">Home</span> /</router-link>
-      <div v-for="(breadcrumb, index) in breadcrumbs" :key="index">
+      <div v-for="(breadcrumb, index) in breadcrumbs" :key="breadcrumb.id" class="flex items-center">
         <router-link :to="{ name: 'subcategory', params: { id: breadcrumb.id } }" class="hover:underline">
           {{ breadcrumb.name }}
         </router-link>
@@ -33,6 +33,7 @@ const loading = ref(false)
 
 const getCategories = async () => {
   categories.value = []
+  breadcrumbs.value = []
   loading.value = true
   try {
     const subcategoryId = route.params.id
@@ -47,6 +48,7 @@ const getCategories = async () => {
   } catch (error) {
     console.error('Error fetching categories:', error)
     categories.value = []
+    breadcrumbs.value = []
   } finally {
     loading.value = false
   }
