@@ -1,6 +1,7 @@
 <template>
   <div class="text-3xl mb-4 font-bold">Categories</div>
-  <div class="grid grid-cols-5 gap-4">
+  <div v-if="loading" class="text-center">Loading...</div>
+  <div v-else class="grid grid-cols-5 gap-4">
     <div v-for="category in categories" :key="category.id">
       <router-link :to="{ name: 'subcategory', params: { id: category.id } }">
         {{ category.name }}
@@ -13,19 +14,29 @@
 import axios from 'axios'
 import { ref, onMounted } from 'vue'
 
-onMounted(() => {
-  getCategories()
-})
-
 const categories = ref([])
+const loading = ref(false)
 
 const getCategories = async () => {
-  const response = await axios.get('http://127.0.0.1:8000/api/categories', {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  })
-  categories.value = response.data.categories
+  categories.value = []
+  loading.value = true
+  try {
+    const response = await axios.get('http://127.0.0.1:8000/api/categories', {
+      headers: {
+        Accept: 'application/json',
+      },
+      timeout: 5000,
+    })
+    categories.value = response.data.categories || []
+  } catch (error) {
+    console.error('Error fetching categories:', error)
+    categories.value = []
+  } finally {
+    loading.value = false
+  }
 }
+
+onMounted(async () => {
+  await getCategories()
+})
 </script>
