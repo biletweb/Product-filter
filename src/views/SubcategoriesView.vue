@@ -14,14 +14,11 @@ import axios from 'axios'
 import { ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
-onMounted(() => {
-  getCategories()
-})
-
 const route = useRoute()
 const categories = ref([])
 
 const getCategories = async () => {
+  categories.value = []
   try {
     const subcategoryId = route.params.id
     const response = await axios.get(`http://127.0.0.1:8000/api/categories/${subcategoryId}/subcategories`, {
@@ -29,17 +26,16 @@ const getCategories = async () => {
         Accept: 'application/json',
       },
     })
-    categories.value = response.data.categories
+    categories.value = response.data.categories || []
   } catch (error) {
     console.error('Error fetching categories:', error)
     categories.value = []
   }
 }
 
-watch(
-  () => route.params.id,
-  () => {
-    getCategories()
-  },
-)
+onMounted(async () => {
+  await getCategories()
+})
+
+watch(() => route.params.id, getCategories)
 </script>
