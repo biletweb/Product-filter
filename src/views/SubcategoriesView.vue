@@ -1,11 +1,20 @@
 <template>
   <div class="text-3xl mb-4 font-bold">Categories ID: {{ route.params.id }}</div>
   <div v-if="loading" class="text-center">Loading...</div>
-  <div v-else class="grid grid-cols-5 gap-4">
-    <div v-for="category in categories" :key="category.id">
-      <router-link :to="{ name: 'subcategory', params: { id: category.id } }">
-        {{ category.name }}
-      </router-link>
+  <div v-else>
+    <div class="my-4 flex items-center">
+      <div v-for="(breadcrumb, index) in breadcrumbs" :key="index">
+        <router-link :to="{ name: 'subcategory', params: { id: breadcrumb.id } }" class="mr-2 hover:underline">
+          {{ breadcrumb.name }}
+        </router-link>
+      </div>
+    </div>
+    <div class="grid grid-cols-5 gap-4">
+      <div v-for="category in categories" :key="category.id">
+        <router-link :to="{ name: 'subcategory', params: { id: category.id } }">
+          {{ category.name }}
+        </router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -17,6 +26,7 @@ import { useRoute } from 'vue-router'
 
 const route = useRoute()
 const categories = ref([])
+const breadcrumbs = ref([])
 const loading = ref(false)
 
 const getCategories = async () => {
@@ -31,6 +41,7 @@ const getCategories = async () => {
       timeout: 5000,
     })
     categories.value = response.data.categories || []
+    breadcrumbs.value = response.data.breadcrumbs || []
   } catch (error) {
     console.error('Error fetching categories:', error)
     categories.value = []
