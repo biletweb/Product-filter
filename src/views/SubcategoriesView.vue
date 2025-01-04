@@ -30,6 +30,12 @@
   <div v-if="products.length" class="my-4 grid grid-rows-1 grid-flow-col gap-4">
     <div class="border border-sky-300 bg-sky-200 rounded-lg">
       <div class="px-4 py-2 text-center font-bold">Total products: {{ totalProducts }}</div>
+      <div v-for="filter in categoryFilters" :key="filter.id" class="px-4 py-2">
+        <span class="font-bold">{{ filter.name }}</span>
+        <div v-for="value in filter.values" :key="value.id">
+          {{ value.value }}
+        </div>
+      </div>
     </div>
     <div>
       <div class="grid grid-cols-4 gap-4">
@@ -55,6 +61,7 @@ const categories = ref([])
 const breadcrumbs = ref([])
 const products = ref([])
 const totalProducts = ref(0)
+const categoryFilters = ref([])
 const loading = ref(false)
 
 const getCategories = async () => {
@@ -62,6 +69,7 @@ const getCategories = async () => {
   breadcrumbs.value = []
   products.value = []
   totalProducts.value = 0
+  categoryFilters.value = []
   loading.value = true
   try {
     const subcategoryId = route.params.id
@@ -75,12 +83,14 @@ const getCategories = async () => {
     breadcrumbs.value = response.data.breadcrumbs || []
     products.value = response.data.products || []
     totalProducts.value = response.data.totalProducts || 0
+    categoryFilters.value = response.data.categoryFilters || []
   } catch (error) {
     console.error('Error fetching categories:', error)
     categories.value = []
     breadcrumbs.value = []
     products.value = []
     totalProducts.value = 0
+    categoryFilters.value = []
   } finally {
     loading.value = false
   }
