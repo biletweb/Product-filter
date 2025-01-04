@@ -20,23 +20,26 @@ onMounted(() => {
 
 const route = useRoute()
 const categories = ref([])
-const subcategories = ref('')
 
 const getCategories = async () => {
-  subcategories.value = route.params.id
-  const response = await axios.get(`http://127.0.0.1:8000/api/categories/${subcategories.value}/subcategories`, {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  })
-  categories.value = response.data.categories
+  try {
+    const subcategoryId = route.params.id
+    const response = await axios.get(`http://127.0.0.1:8000/api/categories/${subcategoryId}/subcategories`, {
+      headers: {
+        Accept: 'application/json',
+      },
+    })
+    categories.value = response.data.categories
+  } catch (error) {
+    console.error('Error fetching categories:', error)
+    categories.value = []
+  }
 }
 
 watch(
   () => route.params.id,
   () => {
     getCategories()
-  }
+  },
 )
 </script>
