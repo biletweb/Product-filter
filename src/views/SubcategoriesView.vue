@@ -66,7 +66,7 @@ import { useRoute } from 'vue-router'
 
 const route = useRoute()
 const categories = ref([])
-const categoryName = ref('')
+const categoryName = ref('Categories')
 const breadcrumbs = ref([])
 const products = ref([])
 const totalProducts = ref(0)
