@@ -113,6 +113,7 @@ const getCategories = async () => {
     products.value = response.data.products || []
     categoryFilters.value = response.data.categoryFilters || []
     categoryName.value = response.data.categoryName || ''
+    offset.value += limit
     if (response.data.products.length < limit) {
       hasMore.value = false
     } else {
@@ -133,6 +134,7 @@ const isChecked = (filterId, valueId) => {
 }
 
 const handleFilterChange = (filterId, valueId) => {
+  offset.value = 0
   if (!selectedFilters[filterId]) {
     selectedFilters[filterId] = []
   }
