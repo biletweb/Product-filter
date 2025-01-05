@@ -100,13 +100,8 @@ const getCategories = async () => {
   try {
     const subcategoryId = route.params.id
     const response = await axios.get(`http://127.0.0.1:8000/api/categories/${subcategoryId}/subcategories`, {
-      params: {
-        offset: offset.value,
-        limit: limit,
-      },
-      headers: {
-        Accept: 'application/json',
-      },
+      params: { offset: offset.value, limit: limit },
+      headers: { Accept: 'application/json' },
       timeout: 5000,
     })
     categories.value = response.data.categories || []
@@ -115,16 +110,9 @@ const getCategories = async () => {
     categoryFilters.value = response.data.categoryFilters || []
     categoryName.value = response.data.categoryName || ''
     offset.value += limit
-    if (response.data.products.length < limit) {
-      hasMore.value = false
-    } else {
-      hasMore.value = true
-    }
+    hasMore.value = response.data.products.length >= limit
   } catch (error) {
     console.error('Error fetching categories:', error)
-    categories.value = []
-    products.value = []
-    categoryFilters.value = []
   } finally {
     loading.value = false
   }
@@ -163,9 +151,7 @@ const submitFilters = async () => {
     params.limit = limit
     const response = await axios.get(`http://127.0.0.1:8000/api/products/${subcategoryId}/subcategories/filter`, {
       params: params,
-      headers: {
-        Accept: 'application/json',
-      },
+      headers: { Accept: 'application/json' },
       timeout: 5000,
     })
     if (clearProducts.value) {
@@ -175,11 +161,7 @@ const submitFilters = async () => {
       products.value = [...products.value, ...response.data.products]
     }
     offset.value += limit
-    if (response.data.products.length < limit) {
-      hasMore.value = false
-    } else {
-      hasMore.value = true
-    }
+    hasMore.value = response.data.products.length >= limit
   } catch (error) {
     console.error('Error fetching products:', error)
   } finally {
