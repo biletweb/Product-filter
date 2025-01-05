@@ -34,9 +34,10 @@
             type="checkbox"
             :value="value.id"
             :checked="isChecked(filter.id, value.id)"
-            @change="(handleFilterChange(filter.id, value.id), submitFilters())"
+            @change="(handleFilterChange(filter.id, value.id), submitFilters(value.id))"
           />
-          {{ value.value }}
+          <span class="mx-2">{{ value.value }}</span>
+          <span v-if="loadingFilters[value.id]">loading...</span>
         </div>
       </div>
     </div>
@@ -54,9 +55,9 @@
           @click="submitFilters"
           type="submit"
           class="rounded-lg bg-sky-500 px-4 py-2 text-white transition duration-300 hover:bg-sky-600 disabled:bg-slate-300"
-          :disabled="loadingFilters"
+          :disabled="loadingMore"
         >
-          <span v-if="loadingFilters">Loading...</span>
+          <span v-if="loadingMore">Loading...</span>
           <span v-else>Load more</span>
         </button>
       </div>
@@ -76,7 +77,8 @@ const breadcrumbs = ref([])
 const products = ref([])
 const categoryFilters = ref([])
 const loading = ref(false)
-const loadingFilters = ref(false)
+const loadingMore = ref(false)
+const loadingFilters = reactive({})
 const selectedFilters = reactive({})
 const offset = ref(0)
 const limit = 2
@@ -127,8 +129,9 @@ const handleFilterChange = (filterId, valueId) => {
   }
 }
 
-const submitFilters = async () => {
-  loadingFilters.value = true
+const submitFilters = async (filterId) => {
+  loadingMore.value = true
+  loadingFilters[filterId] = true
   try {
     const subcategoryId = route.params.id
     if (clearProducts.value) {
@@ -156,7 +159,8 @@ const submitFilters = async () => {
   } catch (error) {
     console.error('Error fetching products:', error)
   } finally {
-    loadingFilters.value = false
+    loadingFilters[filterId] = false
+    loadingMore.value = false
   }
 }
 
