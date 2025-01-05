@@ -41,8 +41,7 @@
       </div>
     </div>
     <div class="w-10/12">
-      <div v-if="loadingFilters" class="text-center">Loading...</div>
-      <div v-else class="grid grid-cols-5 gap-4">
+      <div class="grid grid-cols-5 gap-4">
         <div v-for="product in products" :key="product.id" class="card text-center p-4 bg-sky-200 rounded-lg max-w-[250px]">
           <!-- <router-link :to="{ name: 'product', params: { id: product.id } }"> -->
           {{ product.name }}
@@ -51,11 +50,11 @@
       </div>
       <div class="mt-4 text-center">
         <button
-          v-if="hasMore && !loadingFilters"
+          v-if="hasMore"
           @click="submitFilters"
           type="submit"
           class="rounded-lg bg-sky-500 px-4 py-2 text-white transition duration-300 hover:bg-sky-600 disabled:bg-slate-300"
-          :disabled="loading"
+          :disabled="loadingFilters"
         >
           Load more
         </button>
