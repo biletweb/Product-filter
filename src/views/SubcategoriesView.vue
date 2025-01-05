@@ -27,8 +27,8 @@
       </div>
     </div>
   </div>
-  <div v-if="products.length" class="my-4 grid grid-rows-1 grid-flow-col gap-4">
-    <div class="border border-sky-300 bg-sky-200 rounded-lg max-w-[188px]">
+  <div v-if="products.length" class="my-4 flex gap-4">
+    <div class="border border-sky-300 bg-sky-200 rounded-lg w-2/12">
       <div class="px-4 py-2 text-center font-bold">Total products: {{ totalProducts }}</div>
       <div v-for="filter in categoryFilters" :key="filter.id" class="px-4 py-2">
         <span class="font-bold">{{ filter.name }}</span>
@@ -48,7 +48,7 @@
         </button>
       </div>
     </div>
-    <div class="col-span-12">
+    <div class="w-10/12">
       <div v-if="loadingFilters" class="text-center">Loading...</div>
       <div v-else class="grid grid-cols-5 gap-4">
         <div v-for="product in products" :key="product.id" class="card text-center p-4 bg-sky-200 rounded-lg max-w-[250px]">
