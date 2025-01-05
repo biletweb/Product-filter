@@ -33,13 +33,21 @@
       <div v-for="filter in categoryFilters" :key="filter.id" class="px-4 py-2">
         <span class="font-bold">{{ filter.name }}</span>
         <div v-for="value in filter.values" :key="value.id">
+          <input
+            type="checkbox"
+            :value="value.id"
+            :checked="isChecked(filter.id, value.id)"
+            @change="handleFilterChange(filter.id, value.id)"
+          />
           {{ value.value }}
         </div>
       </div>
+      <button @click="submitFilters">Submit Filters</button>
     </div>
     <div>
-      <div class="grid grid-cols-4 gap-4">
-        <div v-for="product in products" :key="product.id">
+      <div class="grid grid-cols-5 gap-4">
+        <div v-if="loadingFilters" class="text-center">Loading...</div>
+        <div v-else v-for="product in products" :key="product.id">
           <!-- <router-link :to="{ name: 'product', params: { id: product.id } }"> -->
           <div class="card text-center p-4 bg-sky-200 rounded-lg">
             {{ product.name }}
@@ -53,7 +61,7 @@
 
 <script setup>
 import axios from 'axios'
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, reactive } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
@@ -63,6 +71,8 @@ const products = ref([])
 const totalProducts = ref(0)
 const categoryFilters = ref([])
 const loading = ref(false)
+const loadingFilters = ref(false)
+const selectedFilters = reactive({})
 
 const getCategories = async () => {
   categories.value = []
@@ -93,6 +103,47 @@ const getCategories = async () => {
     categoryFilters.value = []
   } finally {
     loading.value = false
+  }
+}
+
+const isChecked = (filterId, valueId) => {
+  return selectedFilters[filterId]?.includes(valueId) || false
+}
+
+const handleFilterChange = (filterId, valueId) => {
+  if (!selectedFilters[filterId]) {
+    selectedFilters[filterId] = []
+  }
+  const filter = selectedFilters[filterId]
+  if (filter.includes(valueId)) {
+    const index = filter.indexOf(valueId)
+    filter.splice(index, 1)
+  } else {
+    filter.push(valueId)
+  }
+}
+
+const submitFilters = async () => {
+  loadingFilters.value = true
+  try {
+    const subcategoryId = route.params.id
+    const params = {}
+    for (const [filterId, selectedValues] of Object.entries(selectedFilters)) {
+      params[`filters[${filterId}][]`] = selectedValues
+    }
+    const response = await axios.get(`http://127.0.0.1:8000/api/products/${subcategoryId}/subcategories/filter`, {
+      params: params,
+      headers: {
+        Accept: 'application/json',
+      },
+      timeout: 5000,
+    })
+    products.value = response.data.products || []
+    totalProducts.value = response.data.totalProducts || 0
+  } catch (error) {
+    console.error('Error fetching products:', error)
+  } finally {
+    loadingFilters.value = false
   }
 }
 
