@@ -77,9 +77,7 @@ const selectedFilters = reactive({})
 
 const getCategories = async () => {
   categories.value = []
-  // breadcrumbs.value = []
   products.value = []
-  totalProducts.value = 0
   categoryFilters.value = []
   loading.value = true
   try {
@@ -99,11 +97,8 @@ const getCategories = async () => {
   } catch (error) {
     console.error('Error fetching categories:', error)
     categories.value = []
-    breadcrumbs.value = []
     products.value = []
-    totalProducts.value = 0
     categoryFilters.value = []
-    categoryName.value = ''
   } finally {
     loading.value = false
   }
