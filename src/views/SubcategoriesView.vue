@@ -27,7 +27,6 @@
   </div>
   <div v-if="products.length" class="my-4 flex gap-4">
     <div class="border border-sky-300 bg-sky-200 rounded-lg w-2/12">
-      <div class="mt-2 text-center font-bold">Total products: {{ totalProducts }}</div>
       <div v-for="filter in categoryFilters" :key="filter.id" class="px-4 py-2">
         <span class="font-bold">{{ filter.name }}</span>
         <div v-for="value in filter.values" :key="value.id">
@@ -56,6 +55,16 @@
         </div>
       </div>
     </div>
+    <div class="mt-4 text-center">
+      <button
+        v-if="hasMore"
+        type="submit"
+        class="rounded-lg bg-sky-500 px-4 py-2 text-white transition duration-300 hover:bg-sky-600 disabled:bg-slate-300"
+        :disabled="loading"
+      >
+        Load more
+      </button>
+    </div>
   </div>
 </template>
 
@@ -69,13 +78,13 @@ const categories = ref([])
 const categoryName = ref('Categories')
 const breadcrumbs = ref([])
 const products = ref([])
-const totalProducts = ref(0)
 const categoryFilters = ref([])
 const loading = ref(false)
 const loadingFilters = ref(false)
 const selectedFilters = reactive({})
 const offset = ref(0)
-const limit = ref(1)
+const limit = 1
+const hasMore = ref(true)
 
 const getCategories = async () => {
   categories.value = []
@@ -87,7 +96,7 @@ const getCategories = async () => {
     const response = await axios.get(`http://127.0.0.1:8000/api/categories/${subcategoryId}/subcategories`, {
       params: {
         offset: offset.value,
-        limit: limit.value,
+        limit: limit,
       },
       headers: {
         Accept: 'application/json',
@@ -97,7 +106,6 @@ const getCategories = async () => {
     categories.value = response.data.categories || []
     breadcrumbs.value = response.data.breadcrumbs || []
     products.value = response.data.products || []
-    totalProducts.value = response.data.totalProducts || 0
     categoryFilters.value = response.data.categoryFilters || []
     categoryName.value = response.data.categoryName || ''
   } catch (error) {
@@ -115,6 +123,7 @@ const isChecked = (filterId, valueId) => {
 }
 
 const handleFilterChange = (filterId, valueId) => {
+  offset.value = 0
   if (!selectedFilters[filterId]) {
     selectedFilters[filterId] = []
   }
@@ -136,7 +145,7 @@ const submitFilters = async () => {
       params[`filters[${filterId}][]`] = selectedValues
     }
     params.offset = offset.value
-    params.limit = limit.value
+    params.limit = limit
     const response = await axios.get(`http://127.0.0.1:8000/api/products/${subcategoryId}/subcategories/filter`, {
       params: params,
       headers: {
@@ -145,7 +154,6 @@ const submitFilters = async () => {
       timeout: 5000,
     })
     products.value = response.data.products || []
-    totalProducts.value = response.data.totalProducts || 0
   } catch (error) {
     console.error('Error fetching products:', error)
   } finally {
