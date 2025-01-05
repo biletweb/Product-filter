@@ -90,6 +90,7 @@ const selectedFilters = reactive({})
 const offset = ref(0)
 const limit = 2
 const hasMore = ref(true)
+const clearProducts = ref(false)
 
 const getCategories = async () => {
   categories.value = []
@@ -134,6 +135,7 @@ const isChecked = (filterId, valueId) => {
 }
 
 const handleFilterChange = (filterId, valueId) => {
+  clearProducts.value = true
   if (!selectedFilters[filterId]) {
     selectedFilters[filterId] = []
   }
@@ -150,6 +152,9 @@ const submitFilters = async () => {
   loadingFilters.value = true
   try {
     const subcategoryId = route.params.id
+    if (clearProducts.value) {
+      offset.value = 0
+    }
     const params = {}
     for (const [filterId, selectedValues] of Object.entries(selectedFilters)) {
       params[`filters[${filterId}][]`] = selectedValues
@@ -163,8 +168,12 @@ const submitFilters = async () => {
       },
       timeout: 5000,
     })
-    // products.value = response.data.products || []
-    products.value = [...products.value, ...response.data.products]
+    if (clearProducts.value) {
+      products.value = response.data.products
+      clearProducts.value = false
+    } else {
+      products.value = [...products.value, ...response.data.products]
+    }
     offset.value += limit
     if (response.data.products.length < limit) {
       hasMore.value = false
@@ -194,6 +203,7 @@ watch(
       delete selectedFilters[key]
     })
     offset.value = 0
+    clearProducts.value = false
     getCategories()
   },
 )
