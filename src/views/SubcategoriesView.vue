@@ -1,35 +1,33 @@
 <template>
-  <div class="text-3xl mb-4 font-bold">Categories</div>
-  <div v-if="loading" class="text-center">Loading...</div>
-  <div v-else>
-    <div class="my-4 flex items-center">
-      <router-link :to="{ name: 'home' }" class="mr-1"><span class="hover:underline">Home</span> /</router-link>
-      <div v-for="(breadcrumb, index) in breadcrumbs" :key="breadcrumb.id" class="flex items-center">
-        <router-link
-          :to="{ name: 'subcategory', params: { id: breadcrumb.id } }"
-          :class="{
-            'text-sky-500 cursor-default': isActiveBreadcrumb(breadcrumb.id),
-            'hover:underline': !isActiveBreadcrumb(breadcrumb.id),
-          }"
-        >
-          {{ breadcrumb.name }}
-        </router-link>
-        <span v-if="index < breadcrumbs.length - 1" class="mx-1">/</span>
-      </div>
+  <div class="text-3xl mb-4 font-bold">{{ categoryName }}</div>
+  <div class="my-4 flex items-center">
+    <router-link :to="{ name: 'home' }" class="mr-1"><span class="hover:underline">Home</span> /</router-link>
+    <div v-for="(breadcrumb, index) in breadcrumbs" :key="breadcrumb.id" class="flex items-center">
+      <router-link
+        :to="{ name: 'subcategory', params: { id: breadcrumb.id } }"
+        :class="{
+          'text-sky-500 cursor-default': isActiveBreadcrumb(breadcrumb.id),
+          'hover:underline': !isActiveBreadcrumb(breadcrumb.id),
+        }"
+      >
+        {{ breadcrumb.name }}
+      </router-link>
+      <span v-if="index < breadcrumbs.length - 1" class="mx-1">/</span>
     </div>
-    <div v-if="categories.length" class="grid grid-cols-5 gap-4">
-      <div v-for="category in categories" :key="category.id">
-        <router-link :to="{ name: 'subcategory', params: { id: category.id } }">
-          <div class="card text-center p-4 bg-slate-300 rounded-lg">
-            {{ category.name }}
-          </div>
-        </router-link>
-      </div>
+  </div>
+  <div v-if="loading" class="text-center">Loading...</div>
+  <div v-else-if="categories.length" class="grid grid-cols-5 gap-4">
+    <div v-for="category in categories" :key="category.id">
+      <router-link :to="{ name: 'subcategory', params: { id: category.id } }">
+        <div class="card text-center p-4 bg-slate-300 rounded-lg">
+          {{ category.name }}
+        </div>
+      </router-link>
     </div>
   </div>
   <div v-if="products.length" class="my-4 flex gap-4">
     <div class="border border-sky-300 bg-sky-200 rounded-lg w-2/12">
-      <!-- <div class="px-4 py-2 text-center font-bold">Total products: {{ totalProducts }}</div> -->
+      <div class="mt-2 text-center font-bold">Total products: {{ totalProducts }}</div>
       <div v-for="filter in categoryFilters" :key="filter.id" class="px-4 py-2">
         <span class="font-bold">{{ filter.name }}</span>
         <div v-for="value in filter.values" :key="value.id">
@@ -68,6 +66,7 @@ import { useRoute } from 'vue-router'
 
 const route = useRoute()
 const categories = ref([])
+const categoryName = ref('')
 const breadcrumbs = ref([])
 const products = ref([])
 const totalProducts = ref(0)
@@ -78,7 +77,7 @@ const selectedFilters = reactive({})
 
 const getCategories = async () => {
   categories.value = []
-  breadcrumbs.value = []
+  // breadcrumbs.value = []
   products.value = []
   totalProducts.value = 0
   categoryFilters.value = []
@@ -96,6 +95,7 @@ const getCategories = async () => {
     products.value = response.data.products || []
     totalProducts.value = response.data.totalProducts || 0
     categoryFilters.value = response.data.categoryFilters || []
+    categoryName.value = response.data.categoryName || ''
   } catch (error) {
     console.error('Error fetching categories:', error)
     categories.value = []
@@ -103,6 +103,7 @@ const getCategories = async () => {
     products.value = []
     totalProducts.value = 0
     categoryFilters.value = []
+    categoryName.value = ''
   } finally {
     loading.value = false
   }
