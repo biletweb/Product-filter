@@ -134,7 +134,6 @@ const isChecked = (filterId, valueId) => {
 }
 
 const handleFilterChange = (filterId, valueId) => {
-  offset.value = 0
   if (!selectedFilters[filterId]) {
     selectedFilters[filterId] = []
   }
@@ -194,6 +193,7 @@ watch(
     Object.keys(selectedFilters).forEach((key) => {
       delete selectedFilters[key]
     })
+    offset.value = 0
     getCategories()
   },
 )
