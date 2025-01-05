@@ -56,7 +56,7 @@
       </div>
       <div class="mt-4 text-center">
         <button
-          v-if="hasMore"
+          v-if="hasMore && !loadingFilters"
           type="submit"
           class="rounded-lg bg-sky-500 px-4 py-2 text-white transition duration-300 hover:bg-sky-600 disabled:bg-slate-300"
           :disabled="loading"
@@ -83,7 +83,7 @@ const loading = ref(false)
 const loadingFilters = ref(false)
 const selectedFilters = reactive({})
 const offset = ref(0)
-const limit = 1
+const limit = 2
 const hasMore = ref(true)
 
 const getCategories = async () => {
@@ -108,6 +108,11 @@ const getCategories = async () => {
     products.value = response.data.products || []
     categoryFilters.value = response.data.categoryFilters || []
     categoryName.value = response.data.categoryName || ''
+    if (response.data.products.length < limit) {
+      hasMore.value = false
+    } else {
+      hasMore.value = true
+    }
   } catch (error) {
     console.error('Error fetching categories:', error)
     categories.value = []
@@ -154,6 +159,11 @@ const submitFilters = async () => {
       timeout: 5000,
     })
     products.value = response.data.products || []
+    if (response.data.products.length < limit) {
+      hasMore.value = false
+    } else {
+      hasMore.value = true
+    }
   } catch (error) {
     console.error('Error fetching products:', error)
   } finally {
