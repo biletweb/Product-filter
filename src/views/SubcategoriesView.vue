@@ -34,7 +34,7 @@
             type="checkbox"
             :value="value.id"
             :checked="isChecked(filter.id, value.id)"
-            :disabled="loadingMore || isDisabled(filter.id, value.id)"
+            :disabled="loadingMore"
             @change="(handleFilterChange(filter.id, value.id), submitFilters(value.id))"
           />
           <span class="mx-2">{{ value.value }}</span>
@@ -187,13 +187,4 @@ watch(
     getCategories()
   },
 )
-
-const isDisabled = (filterId, valueId) => {
-  const matchingProducts = products.value.filter((product) => {
-    return product.attributes?.some((attr) => {
-      return attr.id === filterId && attr.pivot?.value_id === valueId
-    })
-  })
-  return matchingProducts.length === 0
-}
 </script>
