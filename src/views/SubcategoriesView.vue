@@ -41,6 +41,7 @@
       </div>
       <div class="flex justify-center my-4">
         <button
+          v-if="hasActiveFilters"
           @click="submitFilters"
           type="button"
           class="px-4 py-2 transition duration-300 bg-sky-500 hover:bg-sky-600 text-white rounded-lg"
@@ -75,7 +76,7 @@
 
 <script setup>
 import axios from 'axios'
-import { ref, onMounted, watch, reactive } from 'vue'
+import { ref, onMounted, watch, reactive, computed } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
@@ -133,6 +134,8 @@ const getCategories = async () => {
 const isChecked = (filterId, valueId) => {
   return selectedFilters[filterId]?.includes(valueId) || false
 }
+
+const hasActiveFilters = computed(() => Object.keys(selectedFilters).some((key) => selectedFilters[key].length > 0))
 
 const handleFilterChange = (filterId, valueId) => {
   clearProducts.value = true
