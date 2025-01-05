@@ -29,7 +29,7 @@
   </div>
   <div v-if="products.length" class="my-4 flex gap-4">
     <div class="border border-sky-300 bg-sky-200 rounded-lg w-2/12">
-      <div class="px-4 py-2 text-center font-bold">Total products: {{ totalProducts }}</div>
+      <!-- <div class="px-4 py-2 text-center font-bold">Total products: {{ totalProducts }}</div> -->
       <div v-for="filter in categoryFilters" :key="filter.id" class="px-4 py-2">
         <span class="font-bold">{{ filter.name }}</span>
         <div v-for="value in filter.values" :key="value.id">
