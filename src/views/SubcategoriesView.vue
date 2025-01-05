@@ -74,6 +74,8 @@ const categoryFilters = ref([])
 const loading = ref(false)
 const loadingFilters = ref(false)
 const selectedFilters = reactive({})
+const offset = ref(0)
+const limit = ref(1)
 
 const getCategories = async () => {
   categories.value = []
@@ -83,6 +85,10 @@ const getCategories = async () => {
   try {
     const subcategoryId = route.params.id
     const response = await axios.get(`http://127.0.0.1:8000/api/categories/${subcategoryId}/subcategories`, {
+      params: {
+        offset: offset.value,
+        limit: limit.value,
+      },
       headers: {
         Accept: 'application/json',
       },
@@ -129,6 +135,8 @@ const submitFilters = async () => {
     for (const [filterId, selectedValues] of Object.entries(selectedFilters)) {
       params[`filters[${filterId}][]`] = selectedValues
     }
+    params.offset = offset.value
+    params.limit = limit.value
     const response = await axios.get(`http://127.0.0.1:8000/api/products/${subcategoryId}/subcategories/filter`, {
       params: params,
       headers: {
