@@ -159,9 +159,9 @@ const submitFilters = async () => {
       clearProducts.value = false
     } else {
       products.value = [...products.value, ...response.data.products]
+      offset.value += limit
+      hasMore.value = response.data.products.length >= limit
     }
-    offset.value += limit
-    hasMore.value = response.data.products.length >= limit
   } catch (error) {
     console.error('Error fetching products:', error)
   } finally {
