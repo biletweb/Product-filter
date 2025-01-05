@@ -62,6 +62,9 @@
           <span v-else>Load more</span>
         </button>
       </div>
+      <div v-if="products.length === 0" class="p-4 rounded-lg text-white uppercase font-semibold bg-rose-500 text-center">
+        No products
+      </div>
     </div>
   </div>
 </template>
