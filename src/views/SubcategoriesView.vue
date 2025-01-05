@@ -1,6 +1,6 @@
 <template>
   <div class="text-3xl mb-4 font-bold">{{ categoryName }}</div>
-  <div class="my-4 flex items-center">
+  <div v-if="!loadingOnMounted" class="my-4 flex items-center">
     <router-link :to="{ name: 'home' }" class="mr-1"><span class="hover:underline">Home</span> /</router-link>
     <div v-for="(breadcrumb, index) in breadcrumbs" :key="breadcrumb.id" class="flex items-center">
       <router-link
@@ -79,6 +79,7 @@ const products = ref([])
 const categoryFilters = ref([])
 const loading = ref(false)
 const loadingMore = ref(false)
+const loadingOnMounted = ref(false)
 const loadingFilters = reactive({})
 const selectedFilters = reactive({})
 const offset = ref(0)
@@ -170,7 +171,9 @@ const isActiveBreadcrumb = (breadcrumbId) => {
 }
 
 onMounted(async () => {
+  loadingOnMounted.value = true
   await getCategories()
+  loadingOnMounted.value = false
 })
 
 // watch(() => route.params.id, getCategories)
