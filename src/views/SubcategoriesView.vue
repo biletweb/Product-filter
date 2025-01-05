@@ -159,9 +159,8 @@ onMounted(async () => {
 watch(
   () => route.params.id,
   () => {
-    // Очищаем выбранные фильтры
-    Object.keys(selectedFilters).forEach((filterId) => {
-      selectedFilters[filterId] = [] // Очищаем каждый фильтр
+    Object.keys(selectedFilters).forEach((key) => {
+      delete selectedFilters[key]
     })
     getCategories()
   },
