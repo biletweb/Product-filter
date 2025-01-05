@@ -56,7 +56,8 @@
           class="rounded-lg bg-sky-500 px-4 py-2 text-white transition duration-300 hover:bg-sky-600 disabled:bg-slate-300"
           :disabled="loadingFilters"
         >
-          Load more
+          <span v-if="loadingFilters">Loading...</span>
+          <span v-else>Load more</span>
         </button>
       </div>
     </div>
