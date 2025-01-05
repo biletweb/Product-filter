@@ -34,7 +34,7 @@
             type="checkbox"
             :value="value.id"
             :checked="isChecked(filter.id, value.id)"
-            :disabled="loadingMore"
+            :disabled="loadingMore || isDisabled(filter.id, value.id)"
             @change="(handleFilterChange(filter.id, value.id), submitFilters(value.id))"
           />
           <span class="mx-2">{{ value.value }}</span>
@@ -45,9 +45,7 @@
     <div class="w-10/12">
       <div class="grid grid-cols-5 gap-4">
         <div v-for="product in products" :key="product.id" class="card text-center p-4 bg-sky-200 rounded-lg max-w-[250px]">
-          <!-- <router-link :to="{ name: 'product', params: { id: product.id } }"> -->
           {{ product.name }}
-          <!-- </router-link> -->
         </div>
       </div>
       <div v-if="hasMore" class="mt-4 text-center">
@@ -85,7 +83,7 @@ const loadingOnMounted = ref(false)
 const loadingFilters = reactive({})
 const selectedFilters = reactive({})
 const offset = ref(0)
-const limit = 2
+const limit = 10
 const hasMore = ref(true)
 const clearProducts = ref(false)
 
@@ -178,7 +176,6 @@ onMounted(async () => {
   loadingOnMounted.value = false
 })
 
-// watch(() => route.params.id, getCategories)
 watch(
   () => route.params.id,
   () => {
@@ -190,4 +187,13 @@ watch(
     getCategories()
   },
 )
+
+const isDisabled = (filterId, valueId) => {
+  const matchingProducts = products.value.filter((product) => {
+    return product.attributes?.some((attr) => {
+      return attr.id === filterId && attr.pivot?.value_id === valueId
+    })
+  })
+  return matchingProducts.length === 0
+}
 </script>
