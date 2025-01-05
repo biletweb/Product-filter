@@ -132,7 +132,6 @@ const isChecked = (filterId, valueId) => {
 }
 
 const handleFilterChange = (filterId, valueId) => {
-  offset.value = 0
   if (!selectedFilters[filterId]) {
     selectedFilters[filterId] = []
   }
@@ -162,7 +161,9 @@ const submitFilters = async () => {
       },
       timeout: 5000,
     })
-    products.value = response.data.products || []
+    // products.value = response.data.products || []
+    products.value = [...products.value, ...response.data.products]
+    offset.value += limit
     if (response.data.products.length < limit) {
       hasMore.value = false
     } else {
