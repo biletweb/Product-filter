@@ -155,5 +155,15 @@ onMounted(async () => {
   await getCategories()
 })
 
-watch(() => route.params.id, getCategories)
+// watch(() => route.params.id, getCategories)
+watch(
+  () => route.params.id,
+  () => {
+    // Очищаем выбранные фильтры
+    Object.keys(selectedFilters).forEach((filterId) => {
+      selectedFilters[filterId] = [] // Очищаем каждый фильтр
+    })
+    getCategories()
+  },
+)
 </script>
