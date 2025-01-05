@@ -50,9 +50,8 @@
           <!-- </router-link> -->
         </div>
       </div>
-      <div class="mt-4 text-center">
+      <div v-if="hasMore" class="mt-4 text-center">
         <button
-          v-if="hasMore"
           @click="submitFilters"
           type="submit"
           class="rounded-lg bg-sky-500 px-4 py-2 text-white transition duration-300 hover:bg-sky-600 disabled:bg-slate-300"
