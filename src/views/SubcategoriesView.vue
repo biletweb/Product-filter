@@ -54,16 +54,16 @@
           <!-- </router-link> -->
         </div>
       </div>
-    </div>
-    <div class="mt-4 text-center">
-      <button
-        v-if="hasMore"
-        type="submit"
-        class="rounded-lg bg-sky-500 px-4 py-2 text-white transition duration-300 hover:bg-sky-600 disabled:bg-slate-300"
-        :disabled="loading"
-      >
-        Load more
-      </button>
+      <div class="mt-4 text-center">
+        <button
+          v-if="hasMore"
+          type="submit"
+          class="rounded-lg bg-sky-500 px-4 py-2 text-white transition duration-300 hover:bg-sky-600 disabled:bg-slate-300"
+          :disabled="loading"
+        >
+          Load more
+        </button>
+      </div>
     </div>
   </div>
 </template>
