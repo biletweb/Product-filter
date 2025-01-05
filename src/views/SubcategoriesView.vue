@@ -42,7 +42,11 @@
           {{ value.value }}
         </div>
       </div>
-      <button @click="submitFilters">Submit Filters</button>
+      <div class="flex justify-center my-4">
+        <button @click="submitFilters" type="button" class="px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-lg">
+          Submit Filters
+        </button>
+      </div>
     </div>
     <div>
       <div class="grid grid-cols-5 gap-4">
