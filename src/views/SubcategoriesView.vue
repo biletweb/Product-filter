@@ -28,7 +28,7 @@
     </div>
   </div>
   <div v-if="products.length" class="my-4 grid grid-rows-1 grid-flow-col gap-4">
-    <div class="border border-sky-300 bg-sky-200 rounded-lg">
+    <div class="border border-sky-300 bg-sky-200 rounded-lg col-span-2 max-w-[250px]">
       <div class="px-4 py-2 text-center font-bold">Total products: {{ totalProducts }}</div>
       <div v-for="filter in categoryFilters" :key="filter.id" class="px-4 py-2">
         <span class="font-bold">{{ filter.name }}</span>
@@ -48,14 +48,12 @@
         </button>
       </div>
     </div>
-    <div>
-      <div class="grid grid-cols-5 gap-4">
-        <div v-if="loadingFilters" class="text-center">Loading...</div>
-        <div v-else v-for="product in products" :key="product.id">
+    <div class="col-span-10">
+      <div v-if="loadingFilters" class="text-center">Loading...</div>
+      <div v-else class="grid grid-cols-4 gap-4">
+        <div v-for="product in products" :key="product.id" class="card text-center p-4 bg-sky-200 rounded-lg max-w-[300px]">
           <!-- <router-link :to="{ name: 'product', params: { id: product.id } }"> -->
-          <div class="card text-center p-4 bg-sky-200 rounded-lg">
-            {{ product.name }}
-          </div>
+          {{ product.name }}
           <!-- </router-link> -->
         </div>
       </div>
