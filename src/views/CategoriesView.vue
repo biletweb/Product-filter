@@ -32,7 +32,6 @@ const getCategories = async () => {
     categories.value = response.data.categories || []
   } catch (error) {
     console.error('Error fetching categories:', error)
-    categories.value = []
   } finally {
     loading.value = false
   }
