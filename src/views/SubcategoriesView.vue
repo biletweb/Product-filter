@@ -34,19 +34,10 @@
             type="checkbox"
             :value="value.id"
             :checked="isChecked(filter.id, value.id)"
-            @change="handleFilterChange(filter.id, value.id)"
+            @change="(handleFilterChange(filter.id, value.id), submitFilters())"
           />
           {{ value.value }}
         </div>
-      </div>
-      <div class="flex justify-center my-4">
-        <button
-          @click="submitFilters"
-          type="button"
-          class="px-4 py-2 transition duration-300 bg-sky-500 hover:bg-sky-600 text-white rounded-lg"
-        >
-          Submit Filters
-        </button>
       </div>
     </div>
     <div class="w-10/12">
