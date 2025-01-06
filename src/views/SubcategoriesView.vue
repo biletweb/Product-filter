@@ -32,6 +32,7 @@
         <div v-for="value in filter.values" :key="value.id">
           <input
             type="checkbox"
+            :id="value.id"
             :value="value.id"
             :checked="isChecked(filter.id, value.id)"
             :disabled="loadingMore"
