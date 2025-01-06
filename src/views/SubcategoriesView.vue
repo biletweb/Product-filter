@@ -71,7 +71,7 @@
 import axios from 'axios'
 import { ref, onMounted, watch, reactive } from 'vue'
 import { useRoute } from 'vue-router'
-import { useHead } from '@vueuse/head'
+import { useHead } from '@unhead/vue'
 
 const route = useRoute()
 const categories = ref([])

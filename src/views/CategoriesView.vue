@@ -15,7 +15,7 @@
 <script setup>
 import axios from 'axios'
 import { ref, onMounted } from 'vue'
-import { useHead } from '@vueuse/head'
+import { useHead } from '@unhead/vue'
 
 const categories = ref([])
 const loading = ref(false)
