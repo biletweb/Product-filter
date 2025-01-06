@@ -15,9 +15,29 @@
 <script setup>
 import axios from 'axios'
 import { ref, onMounted } from 'vue'
+import { useHead } from '@vueuse/head'
 
 const categories = ref([])
 const loading = ref(false)
+
+// Динамичные данные для SEO
+const title = 'Категории товаров | biletweb'
+const description =
+  'Откройте для себя разнообразные категории товаров: от электроники до одежды и аксессуаров. Все, что вам нужно, в одном месте!'
+const keywords = 'категории товаров, электроника, одежда, аксессуары, книги, интернет-магазин'
+
+useHead({
+  title,
+  meta: [
+    { name: 'description', content: description },
+    { name: 'keywords', content: keywords },
+    { property: 'og:title', content: title },
+    { property: 'og:description', content: description },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: window.location.href },
+    { property: 'og:image', content: '/favicon.ico' }, // Укажите изображение для Open Graph
+  ],
+})
 
 const getCategories = async () => {
   categories.value = []

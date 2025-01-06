@@ -70,6 +70,7 @@
 import axios from 'axios'
 import { ref, onMounted, watch, reactive } from 'vue'
 import { useRoute } from 'vue-router'
+import { useHead } from '@vueuse/head'
 
 const route = useRoute()
 const categories = ref([])
@@ -187,4 +188,19 @@ watch(
     getCategories()
   },
 )
+
+const description = 'Лучшие товары из мира электроники: смартфоны, ноутбуки, телевизоры, аксессуары и многое другое.'
+
+useHead({
+  title: () => `${categoryName.value} | biletweb`,
+  meta: [
+    { name: 'description', content: description },
+    { name: 'keywords', content: () => categoryName.value },
+    { property: 'og:title', content: () => `${categoryName.value} | biletweb` },
+    { property: 'og:description', content: description },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: window.location.href },
+    { property: 'og:image', content: '/favicon.ico' },
+  ],
+})
 </script>
